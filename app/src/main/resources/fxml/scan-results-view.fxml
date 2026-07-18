@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.localprojectmanager.ui.ScanResultsViewController"
+            styleClass="page-card">
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="16">
+            <Button text="← 返回" onAction="#goBack" styleClass="back-button"/>
+            <Label text="扫描结果" styleClass="app-title"/>
+            <BorderPane.margin>
+                <Insets top="24" right="32" bottom="12" left="24"/>
+            </BorderPane.margin>
+        </HBox>
+    </top>
+    <center>
+        <VBox spacing="14">
+            <HBox alignment="CENTER_LEFT" spacing="8">
+                <Label fx:id="summaryLabel"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button text="全选" onAction="#selectAll"/>
+                <Button text="取消全选" onAction="#clearSelection"/>
+            </HBox>
+            <ListView fx:id="resultsList" prefHeight="340" VBox.vgrow="ALWAYS"
+                      styleClass="scan-root-list"/>
+            <Label fx:id="warningLabel" wrapText="true" styleClass="warning-text"/>
+            <Label fx:id="statusLabel" wrapText="true" styleClass="status-text"/>
+            <HBox alignment="CENTER_RIGHT" spacing="16">
+                <Label fx:id="selectedLabel"/>
+                <Button fx:id="importButton" text="导入项目" onAction="#importSelected"
+                        defaultButton="true"/>
+            </HBox>
+            <padding>
+                <Insets top="16" right="40" bottom="36" left="40"/>
+            </padding>
+        </VBox>
+    </center>
+</BorderPane>

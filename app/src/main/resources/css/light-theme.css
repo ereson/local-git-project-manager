@@ -1,0 +1,17 @@
+.app-root {
+    -fx-background-color:
+        linear-gradient(to bottom right, rgba(255,255,255,0.76), rgba(255,255,255,0.44)),
+        linear-gradient(to bottom right, #d9f0f2 0%, #eef2f3 55%, #dfe5e8 100%);
+}
+.app-root .label, .app-root .check-box, .welcome-title, .detail-title,
+.project-card-title, .detail-value, #summaryLabel, #selectedLabel { -fx-text-fill: #182126; }
+.welcome-description, .status-text, .result-path, .project-card-path,
+.project-meta, .empty-text, .detail-key { -fx-text-fill: #52616a; }
+.button { -fx-background-color: rgba(255,255,255,0.62); -fx-border-color: rgba(38,62,70,0.20); -fx-text-fill: #26383e; }
+.project-card, .detail-panel { -fx-background-color: rgba(255,255,255,0.52); -fx-border-color: rgba(38,62,70,0.18); }
+.project-search, .combo-box, .scan-root-list { -fx-background-color: rgba(255,255,255,0.62); -fx-border-color: rgba(38,62,70,0.20); -fx-text-fill: #182126; }
+.list-cell, .combo-box .list-cell { -fx-text-fill: #26383e; -fx-border-color: transparent transparent rgba(38,62,70,0.10) transparent; }
+.project-table { -fx-control-inner-background: rgba(255,255,255,0.72); -fx-background-color: rgba(255,255,255,0.52); -fx-table-cell-border-color: rgba(38,62,70,0.10); }
+.project-table .column-header-background, .project-table .column-header, .project-table .filler { -fx-background-color: #e4edef; }
+.project-table .column-header .label, .project-table .table-cell { -fx-text-fill: #182126; }
+.project-table .table-row-cell { -fx-background-color: rgba(255,255,255,0.72); }

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.StackPane?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.localprojectmanager.ui.ProjectHomeViewController"
+            styleClass="page-card">
+    <top>
+        <VBox spacing="8">
+            <HBox alignment="CENTER_LEFT" spacing="12">
+                <Label text="本地 Git 项目" styleClass="welcome-title"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button text="添加扫描目录" onAction="#addScanDirectory"/>
+                <Button text="手动添加项目" onAction="#addManualProject"/>
+                <Button text="刷新列表" onAction="#refreshProjects"/>
+                <ToggleButton fx:id="cardViewButton" text="卡片" onAction="#showCardView"/>
+                <ToggleButton fx:id="tableViewButton" text="表格" onAction="#showTableView"/>
+                <Button text="设置" onAction="#openSettings"/>
+            </HBox>
+            <TextField fx:id="searchField" promptText="搜索项目名称或路径"
+                       accessibleText="搜索项目" styleClass="project-search"/>
+            <Label fx:id="summaryLabel" styleClass="status-text"/>
+            <padding>
+                <Insets top="28" right="32" bottom="12" left="32"/>
+            </padding>
+        </VBox>
+    </top>
+    <center>
+        <StackPane>
+            <ScrollPane fx:id="cardsScroll" fitToWidth="true" pannable="true" styleClass="project-scroll">
+                <content>
+                    <FlowPane fx:id="cardsPane" alignment="TOP_LEFT" hgap="18" vgap="18"
+                              prefWrapLength="860">
+                        <padding><Insets top="12" right="32" bottom="24" left="32"/></padding>
+                    </FlowPane>
+                </content>
+            </ScrollPane>
+            <TableView fx:id="projectTable" visible="false" managed="false" styleClass="project-table">
+                <columns>
+                    <TableColumn fx:id="nameColumn" text="项目名称" prefWidth="150"/>
+                    <TableColumn fx:id="pathColumn" text="项目路径" prefWidth="260"/>
+                    <TableColumn fx:id="branchColumn" text="当前分支" prefWidth="110"/>
+                    <TableColumn fx:id="changesColumn" text="本地修改" prefWidth="90"/>
+                    <TableColumn fx:id="ideColumn" text="默认 IDE" prefWidth="130"/>
+                    <TableColumn fx:id="openedColumn" text="最近打开" prefWidth="145"/>
+                    <TableColumn fx:id="stateColumn" text="状态" prefWidth="100"/>
+                </columns>
+                <StackPane.margin><Insets top="12" right="32" bottom="24" left="32"/></StackPane.margin>
+            </TableView>
+        </StackPane>
+    </center>
+    <bottom>
+        <Label fx:id="statusLabel" wrapText="true" styleClass="status-text">
+            <BorderPane.margin>
+                <Insets top="4" right="32" bottom="24" left="32"/>
+            </BorderPane.margin>
+        </Label>
+    </bottom>
+</BorderPane>

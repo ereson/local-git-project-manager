@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.localprojectmanager.ui.SettingsViewController"
+      spacing="18" styleClass="page-card">
+    <HBox alignment="CENTER_LEFT" spacing="12">
+        <Button text="← 返回项目列表" onAction="#goBack" styleClass="back-button"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label text="设置" styleClass="welcome-title"/>
+    </HBox>
+    <GridPane hgap="18" vgap="18" styleClass="detail-panel">
+        <Label text="主题" GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="detail-key"/>
+        <ComboBox fx:id="themeChoice" onAction="#saveTheme" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+        <Label text="关闭窗口" GridPane.rowIndex="1" GridPane.columnIndex="0" styleClass="detail-key"/>
+        <ComboBox fx:id="closeBehaviorChoice" onAction="#saveCloseBehavior" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+        <Label text="全局 Pull 策略" GridPane.rowIndex="2" GridPane.columnIndex="0" styleClass="detail-key"/>
+        <ComboBox fx:id="pullStrategyChoice" onAction="#savePullStrategy" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+        <Label text="软件更新" GridPane.rowIndex="3" GridPane.columnIndex="0" styleClass="detail-key"/>
+        <CheckBox fx:id="updateCheckBox" text="启动时静默检查更新"
+                  onAction="#saveUpdateSetting" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+        <Button text="立即检查更新" onAction="#checkUpdates"
+                GridPane.rowIndex="3" GridPane.columnIndex="2"/>
+        <Label text="当前版本" GridPane.rowIndex="4" GridPane.columnIndex="0" styleClass="detail-key"/>
+        <Label text="0.1.0" GridPane.rowIndex="4" GridPane.columnIndex="1" styleClass="detail-value"/>
+        <Label text="自定义忽略目录" GridPane.rowIndex="5" GridPane.columnIndex="0" styleClass="detail-key"/>
+        <VBox spacing="8" GridPane.rowIndex="5" GridPane.columnIndex="1">
+            <TextArea fx:id="ignoreRulesText" promptText="每行一个目录名，例如 generated" prefRowCount="4"/>
+            <Button text="保存忽略规则" onAction="#saveIgnoreRules"/>
+        </VBox>
+        <Button text="打开错误日志目录" onAction="#openLogs"
+                GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+    </GridPane>
+    <Label fx:id="statusLabel" styleClass="status-text"/>
+    <padding><Insets top="28" right="32" bottom="28" left="32"/></padding>
+</VBox>

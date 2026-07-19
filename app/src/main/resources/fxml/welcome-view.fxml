@@ -9,15 +9,19 @@
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.localprojectmanager.ui.WelcomeViewController"
-      alignment="CENTER" spacing="18" styleClass="welcome-card">
-    <Label text="本地 Git 项目管理器" styleClass="welcome-title"/>
-    <Label text="扫描常用目录，在一个窗口中查找项目并使用对应 IDE 打开。"
-           wrapText="true" styleClass="welcome-description"/>
-    <HBox alignment="CENTER" spacing="12">
-        <Button text="选择扫描目录" onAction="#chooseScanDirectory" defaultButton="true"/>
-        <Button text="手动添加项目" onAction="#addManualProject"/>
-    </HBox>
-    <Label text="所有项目数据只保存在当前电脑中，不会上传。" styleClass="status-text"/>
+      alignment="CENTER" styleClass="welcome-card">
+    <VBox alignment="CENTER" spacing="18" maxWidth="600"
+          styleClass="detail-panel,welcome-panel">
+        <Label text="本地 Git 项目管理器" styleClass="welcome-title"/>
+        <Label text="集中查找本机 Git 项目，并用常用 IDE 快速打开。"
+               wrapText="true" styleClass="welcome-description"/>
+        <HBox alignment="CENTER" spacing="12">
+            <Button text="选择扫描目录" onAction="#chooseScanDirectory"
+                    defaultButton="true"/>
+            <Button text="手动添加项目" onAction="#addManualProject"/>
+        </HBox>
+        <Label text="项目数据仅保存在当前电脑中" styleClass="status-text"/>
+    </VBox>
     <padding>
         <Insets top="48" right="48" bottom="48" left="48"/>
     </padding>

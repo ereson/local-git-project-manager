@@ -9,7 +9,9 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane xmlns="http://javafx.com/javafx"
@@ -40,7 +42,8 @@
                         <Label text="快捷操作" styleClass="detail-title"/>
                         <FlowPane hgap="10" vgap="10">
                             <Button fx:id="openProjectButton" text="打开项目"
-                                    onAction="#openProject" disable="true"/>
+                                    onAction="#openProject" disable="true"
+                                    styleClass="primary-button"/>
                             <Button text="使用其他 IDE" onAction="#openWithOtherIde"/>
                             <Button fx:id="openExplorerButton" text="在资源管理器中打开"
                                     onAction="#openInExplorer" disable="true"/>
@@ -61,30 +64,35 @@
                     <VBox spacing="12" styleClass="detail-panel">
                         <HBox alignment="CENTER_LEFT" spacing="12">
                             <Label text="Git 状态" styleClass="detail-title"/>
+                            <Region HBox.hgrow="ALWAYS"/>
                             <Button fx:id="refreshGitButton" text="刷新当前状态"
                                     onAction="#refreshGitStatus" disable="true"/>
                             <Button fx:id="fetchButton" text="检查远程更新"
                                     onAction="#fetchRemote" disable="true"/>
                             <Button fx:id="pullButton" text="Pull"
-                                    onAction="#pullProject" disable="true"/>
+                                    onAction="#pullProject" disable="true"
+                                    styleClass="primary-button"/>
                         </HBox>
-                        <HBox spacing="8">
-                            <Label text="当前分支" styleClass="detail-key"/>
-                            <Label fx:id="currentBranchLabel" text="待刷新" styleClass="detail-value"/>
-                        </HBox>
-                        <HBox spacing="8">
-                            <Label text="本地修改" styleClass="detail-key"/>
-                            <Label fx:id="modificationsLabel" text="待刷新" styleClass="detail-value"/>
-                        </HBox>
-                        <HBox spacing="8">
-                            <Label text="最近提交" styleClass="detail-key"/>
-                            <Label fx:id="latestCommitLabel" text="待刷新" styleClass="detail-value"/>
-                        </HBox>
-                        <HBox spacing="8">
-                            <Label text="远程仓库" styleClass="detail-key"/>
+                        <GridPane hgap="14" vgap="10" styleClass="detail-grid">
+                            <Label text="当前分支" styleClass="detail-key"
+                                   GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                            <Label fx:id="currentBranchLabel" text="待刷新" styleClass="detail-value"
+                                   GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                            <Label text="本地修改" styleClass="detail-key"
+                                   GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+                            <Label fx:id="modificationsLabel" text="待刷新" styleClass="detail-value"
+                                   GridPane.rowIndex="0" GridPane.columnIndex="3"/>
+                            <Label text="最近提交" styleClass="detail-key"
+                                   GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                            <Label fx:id="latestCommitLabel" text="待刷新" wrapText="true"
+                                   styleClass="detail-value" GridPane.rowIndex="1"
+                                   GridPane.columnIndex="1" GridPane.columnSpan="3"/>
+                            <Label text="远程仓库" styleClass="detail-key"
+                                   GridPane.rowIndex="2" GridPane.columnIndex="0"/>
                             <Label fx:id="remoteUrlLabel" text="待刷新" wrapText="true"
-                                   styleClass="detail-value"/>
-                        </HBox>
+                                   styleClass="detail-value" GridPane.rowIndex="2"
+                                   GridPane.columnIndex="1" GridPane.columnSpan="3"/>
+                        </GridPane>
                         <Label fx:id="gitStatusLabel" text="尚无 Git 状态缓存。"
                                styleClass="status-text"/>
                         <Label fx:id="lastOperationLabel" text="最近操作：无"
@@ -97,9 +105,13 @@
                     </VBox>
 
                     <VBox spacing="10" styleClass="detail-panel">
-                        <Label text="分支" styleClass="detail-title"/>
-                        <TextField fx:id="branchSearchField" promptText="搜索分支名称"
-                                   accessibleText="搜索分支名称" styleClass="project-search"/>
+                        <HBox alignment="CENTER_LEFT" spacing="12">
+                            <Label text="分支" styleClass="detail-title"/>
+                            <Region HBox.hgrow="ALWAYS"/>
+                            <TextField fx:id="branchSearchField" promptText="搜索分支名称"
+                                       accessibleText="搜索分支名称" prefWidth="280"
+                                       styleClass="project-search"/>
+                        </HBox>
                         <HBox spacing="16">
                             <VBox spacing="6" HBox.hgrow="ALWAYS">
                                 <Label text="本地分支" styleClass="detail-key"/>
@@ -120,11 +132,15 @@
                                styleClass="status-text"/>
                     </VBox>
 
-                    <HBox spacing="10">
-                        <Button text="重命名" onAction="#renameProject"/>
-                        <Button text="重新指定路径" onAction="#relocateProject"/>
-                        <Button text="从软件中移除" onAction="#removeProject"/>
-                    </HBox>
+                    <VBox spacing="12" styleClass="detail-panel">
+                        <Label text="项目管理" styleClass="detail-title"/>
+                        <HBox spacing="10">
+                            <Button text="重命名" onAction="#renameProject"/>
+                            <Button text="重新指定路径" onAction="#relocateProject"/>
+                            <Button text="从软件中移除" onAction="#removeProject"
+                                    styleClass="danger-button"/>
+                        </HBox>
+                    </VBox>
                     <padding>
                         <Insets top="16" right="40" bottom="40" left="40"/>
                     </padding>

@@ -5,37 +5,41 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.localprojectmanager.ui.ScanRootsViewController"
-            styleClass="page-card">
-    <top>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.localprojectmanager.ui.ScanRootsViewController"
+      alignment="TOP_CENTER" spacing="18" styleClass="page-card">
+    <HBox alignment="CENTER_LEFT" spacing="14" maxWidth="Infinity">
         <Button text="← 返回" onAction="#goBack" styleClass="back-button">
-            <BorderPane.margin>
-                <Insets top="24" right="24" bottom="12" left="24"/>
-            </BorderPane.margin>
         </Button>
-    </top>
-    <center>
-        <VBox spacing="16">
-            <Label text="选择扫描目录" styleClass="welcome-title"/>
-            <Label text="将在以下目录中查找 Git 项目：" styleClass="welcome-description"/>
-            <ListView fx:id="scanRootsList" prefHeight="220" styleClass="scan-root-list"/>
-            <HBox spacing="12">
+        <Label text="选择扫描目录" styleClass="welcome-title"/>
+    </HBox>
+    <VBox spacing="14" maxWidth="760" styleClass="detail-panel" VBox.vgrow="ALWAYS">
+            <Label text="将在以下目录中查找 Git 项目。你可以一次添加多个位置。"
+                   wrapText="true" styleClass="section-description"/>
+            <ListView fx:id="scanRootsList" prefHeight="260" styleClass="scan-root-list"
+                      VBox.vgrow="ALWAYS">
+                <placeholder>
+                    <Label text="尚未添加扫描目录" styleClass="empty-text"/>
+                </placeholder>
+            </ListView>
+            <HBox alignment="CENTER_LEFT" spacing="12">
                 <Button fx:id="addButton" text="+ 添加目录" onAction="#addDirectory"/>
                 <Button fx:id="removeButton" text="移除所选目录" onAction="#removeSelected"/>
+                <Region HBox.hgrow="ALWAYS"/>
             </HBox>
             <CheckBox fx:id="defaultIgnoreRulesCheckBox" text="使用默认忽略规则"/>
             <Label fx:id="messageLabel" wrapText="true" styleClass="status-text"/>
-            <Button fx:id="startScanButton" text="开始扫描" onAction="#startScan"
-                    defaultButton="true" maxWidth="Infinity"/>
-            <padding>
-                <Insets top="32" right="48" bottom="48" left="48"/>
-            </padding>
-        </VBox>
-    </center>
-</BorderPane>
+            <HBox alignment="CENTER_RIGHT">
+                <Button fx:id="startScanButton" text="开始扫描" onAction="#startScan"
+                        defaultButton="true" minWidth="128" styleClass="primary-button"/>
+            </HBox>
+    </VBox>
+    <padding>
+        <Insets top="28" right="32" bottom="32" left="32"/>
+    </padding>
+</VBox>

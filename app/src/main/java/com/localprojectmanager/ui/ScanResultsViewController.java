@@ -10,6 +10,8 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 import java.sql.SQLException;
@@ -124,10 +126,14 @@ public final class ScanResultsViewController {
         private final Label path = new Label();
         private final Label nested = new Label();
         private final Label imported = new Label("已导入");
+        private final VBox details = new VBox(3, name, path, nested);
+        private final Region spacer = new Region();
         private final HBox content = new HBox(
                 12,
                 selected,
-                new VBox(3, name, path, nested, imported)
+                details,
+                spacer,
+                imported
         );
 
         private RepositoryCell() {
@@ -135,6 +141,9 @@ public final class ScanResultsViewController {
             path.getStyleClass().add("result-path");
             nested.getStyleClass().add("nested-text");
             imported.getStyleClass().add("imported-text");
+            HBox.setHgrow(details, Priority.ALWAYS);
+            HBox.setHgrow(spacer, Priority.ALWAYS);
+            content.setMaxWidth(Double.MAX_VALUE);
         }
 
         @Override

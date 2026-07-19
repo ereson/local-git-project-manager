@@ -4,44 +4,40 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.localprojectmanager.ui.ScanResultsViewController"
-            styleClass="page-card">
-    <top>
-        <HBox alignment="CENTER_LEFT" spacing="16">
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.localprojectmanager.ui.ScanResultsViewController"
+      spacing="18" styleClass="page-card">
+        <HBox alignment="CENTER_LEFT" spacing="14">
             <Button text="← 返回" onAction="#goBack" styleClass="back-button"/>
-            <Label text="扫描结果" styleClass="app-title"/>
-            <BorderPane.margin>
-                <Insets top="24" right="32" bottom="12" left="24"/>
-            </BorderPane.margin>
+            <Label text="扫描结果" styleClass="welcome-title"/>
         </HBox>
-    </top>
-    <center>
-        <VBox spacing="14">
+        <VBox spacing="14" styleClass="detail-panel" VBox.vgrow="ALWAYS">
             <HBox alignment="CENTER_LEFT" spacing="8">
-                <Label fx:id="summaryLabel"/>
+                <Label fx:id="summaryLabel" styleClass="detail-title"/>
                 <Region HBox.hgrow="ALWAYS"/>
-                <Button text="全选" onAction="#selectAll"/>
-                <Button text="取消全选" onAction="#clearSelection"/>
+                <Button text="全选" onAction="#selectAll" styleClass="compact-button"/>
+                <Button text="取消全选" onAction="#clearSelection" styleClass="compact-button"/>
             </HBox>
             <ListView fx:id="resultsList" prefHeight="340" VBox.vgrow="ALWAYS"
-                      styleClass="scan-root-list"/>
+                      styleClass="scan-root-list">
+                <placeholder>
+                    <Label text="没有发现可导入的 Git 项目" styleClass="empty-text"/>
+                </placeholder>
+            </ListView>
             <Label fx:id="warningLabel" wrapText="true" styleClass="warning-text"/>
             <Label fx:id="statusLabel" wrapText="true" styleClass="status-text"/>
             <HBox alignment="CENTER_RIGHT" spacing="16">
-                <Label fx:id="selectedLabel"/>
+                <Label fx:id="selectedLabel" styleClass="project-meta"/>
                 <Button fx:id="importButton" text="导入项目" onAction="#importSelected"
-                        defaultButton="true"/>
+                        defaultButton="true" minWidth="128" styleClass="primary-button"/>
             </HBox>
-            <padding>
-                <Insets top="16" right="40" bottom="36" left="40"/>
-            </padding>
         </VBox>
-    </center>
-</BorderPane>
+    <padding>
+        <Insets top="28" right="32" bottom="32" left="32"/>
+    </padding>
+</VBox>

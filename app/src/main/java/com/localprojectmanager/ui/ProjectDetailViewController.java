@@ -5,6 +5,7 @@ import com.localprojectmanager.application.git.GitStatusService;
 import com.localprojectmanager.application.git.GitOperationService;
 import com.localprojectmanager.application.project.ProjectImportService;
 import com.localprojectmanager.application.project.ProjectLaunchService;
+import com.localprojectmanager.domain.git.GitOperationRecord;
 import com.localprojectmanager.domain.git.GitStatusCache;
 import com.localprojectmanager.domain.ide.IdeConfig;
 import com.localprojectmanager.domain.project.PathStatus;
@@ -341,12 +342,40 @@ public final class ProjectDetailViewController {
 
     private void showLastOperation() {
         try {
-            lastOperationLabel.setText(gitOperationService.lastOperation(project.id())
-                    .map(operation -> "最近操作：" + operation.type() + " · "
-                            + operation.status() + " · " + DATE_TIME.format(operation.finishedAt()))
+            var operation = gitOperationService.lastOperation(project.id());
+            lastOperationLabel.setText(operation.map(ProjectDetailViewController::operationText)
                     .orElse("最近操作：无"));
+            setOperationStyle(operation.map(GitOperationRecord::status).orElse(null));
         } catch (SQLException exception) {
             lastOperationLabel.setText("最近操作：读取失败");
+            setOperationStyle(GitOperationRecord.Status.FAILED);
+        }
+    }
+
+    static String operationText(GitOperationRecord operation) {
+        var type = switch (operation.type()) {
+            case FETCH -> "Fetch";
+            case PULL -> "Pull";
+            case SWITCH_BRANCH -> "切换分支";
+        };
+        var status = switch (operation.status()) {
+            case SUCCESS -> "成功";
+            case FAILED -> "失败";
+            case CONFLICT -> "存在冲突";
+        };
+        return "最近操作：" + type + " · " + status + " · " + DATE_TIME.format(operation.finishedAt());
+    }
+
+    private void setOperationStyle(GitOperationRecord.Status status) {
+        lastOperationLabel.getStyleClass().removeAll(
+                "operation-status-success", "operation-status-failed", "operation-status-conflict"
+        );
+        if (status != null) {
+            lastOperationLabel.getStyleClass().add(switch (status) {
+                case SUCCESS -> "operation-status-success";
+                case FAILED -> "operation-status-failed";
+                case CONFLICT -> "operation-status-conflict";
+            });
         }
     }
 

@@ -20,22 +20,28 @@
             fx:controller="com.localprojectmanager.ui.ProjectHomeViewController"
             styleClass="page-card">
     <top>
-        <VBox spacing="8">
+        <VBox spacing="12">
             <HBox alignment="CENTER_LEFT" spacing="12">
                 <Label text="本地 Git 项目" styleClass="welcome-title"/>
                 <Region HBox.hgrow="ALWAYS"/>
-                <Button text="添加扫描目录" onAction="#addScanDirectory"/>
-                <Button text="手动添加项目" onAction="#addManualProject"/>
-                <Button text="刷新列表" onAction="#refreshProjects"/>
-                <ToggleButton fx:id="cardViewButton" text="卡片" onAction="#showCardView"/>
-                <ToggleButton fx:id="tableViewButton" text="表格" onAction="#showTableView"/>
-                <Button text="设置" onAction="#openSettings"/>
+                <HBox spacing="0" styleClass="view-switch">
+                    <ToggleButton fx:id="cardViewButton" text="卡片" onAction="#showCardView"/>
+                    <ToggleButton fx:id="tableViewButton" text="表格" onAction="#showTableView"/>
+                </HBox>
+                <Button text="设置" onAction="#openSettings" styleClass="compact-button"/>
             </HBox>
-            <TextField fx:id="searchField" promptText="搜索项目名称或路径"
-                       accessibleText="搜索项目" styleClass="project-search"/>
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <TextField fx:id="searchField" promptText="搜索项目名称或路径"
+                           accessibleText="搜索项目" styleClass="project-search"
+                           HBox.hgrow="ALWAYS"/>
+                <Button text="＋ 添加项目" onAction="#addManualProject"
+                        styleClass="primary-button"/>
+                <Button text="扫描目录" onAction="#addScanDirectory"/>
+                <Button text="刷新" onAction="#refreshProjects"/>
+            </HBox>
             <Label fx:id="summaryLabel" styleClass="status-text"/>
             <padding>
-                <Insets top="28" right="32" bottom="12" left="32"/>
+                <Insets top="24" right="32" bottom="8" left="32"/>
             </padding>
         </VBox>
     </top>
@@ -50,14 +56,17 @@
                 </content>
             </ScrollPane>
             <TableView fx:id="projectTable" visible="false" managed="false" styleClass="project-table">
+                <placeholder>
+                    <Label text="没有可显示的项目" styleClass="empty-text"/>
+                </placeholder>
                 <columns>
-                    <TableColumn fx:id="nameColumn" text="项目名称" prefWidth="150"/>
-                    <TableColumn fx:id="pathColumn" text="项目路径" prefWidth="260"/>
-                    <TableColumn fx:id="branchColumn" text="当前分支" prefWidth="110"/>
-                    <TableColumn fx:id="changesColumn" text="本地修改" prefWidth="90"/>
-                    <TableColumn fx:id="ideColumn" text="默认 IDE" prefWidth="130"/>
-                    <TableColumn fx:id="openedColumn" text="最近打开" prefWidth="145"/>
-                    <TableColumn fx:id="stateColumn" text="状态" prefWidth="100"/>
+                    <TableColumn fx:id="nameColumn" text="项目名称" prefWidth="130"/>
+                    <TableColumn fx:id="pathColumn" text="项目路径" prefWidth="220"/>
+                    <TableColumn fx:id="branchColumn" text="当前分支" prefWidth="100"/>
+                    <TableColumn fx:id="changesColumn" text="本地修改" prefWidth="80"/>
+                    <TableColumn fx:id="ideColumn" text="默认 IDE" prefWidth="110"/>
+                    <TableColumn fx:id="openedColumn" text="最近打开" prefWidth="130"/>
+                    <TableColumn fx:id="stateColumn" text="状态" prefWidth="90"/>
                 </columns>
                 <StackPane.margin><Insets top="12" right="32" bottom="24" left="32"/></StackPane.margin>
             </TableView>

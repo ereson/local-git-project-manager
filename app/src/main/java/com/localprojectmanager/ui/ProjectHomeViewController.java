@@ -20,10 +20,13 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.ScrollPane;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
@@ -95,11 +98,20 @@ public final class ProjectHomeViewController {
         openedColumn.setCellValueFactory(cell -> text(cell.getValue().lastOpenedAt() == null
                 ? "从未打开" : DATE_TIME.format(cell.getValue().lastOpenedAt())));
         stateColumn.setCellValueFactory(cell -> text(pathStateText(cell.getValue().pathStatus())));
+        configureTooltip(nameColumn);
+        configureTooltip(pathColumn);
+        configureTooltip(branchColumn);
+        configureTooltip(changesColumn);
+        configureTooltip(ideColumn);
+        configureTooltip(openedColumn);
+        configureTooltip(stateColumn);
         projectTable.setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
-                var selected = projectTable.getSelectionModel().getSelectedItem();
-                if (selected != null && onOpenProject != null) onOpenProject.accept(selected);
+                openSelectedProject();
             }
+        });
+        projectTable.setOnKeyPressed(event -> {
+            if (opensSelectedProject(event.getCode())) openSelectedProject();
         });
         searchField.textProperty().addListener((ignored, oldValue, newValue) -> {
             if (projectService != null) {
@@ -232,9 +244,30 @@ public final class ProjectHomeViewController {
         return new ReadOnlyStringWrapper(value == null ? "—" : value.toString());
     }
 
+    private static void configureTooltip(TableColumn<Project, String> column) {
+        column.setCellFactory(ignored -> new TableCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? null : item);
+                setTooltip(empty || item == null ? null : new Tooltip(item));
+            }
+        });
+    }
+
+    static boolean opensSelectedProject(KeyCode code) {
+        return code == KeyCode.ENTER;
+    }
+
+    private void openSelectedProject() {
+        var selected = projectTable.getSelectionModel().getSelectedItem();
+        if (selected != null && onOpenProject != null) onOpenProject.accept(selected);
+    }
+
     private StackPane createCard(Project project) {
         var title = new Label(project.displayName());
         title.getStyleClass().add("project-card-title");
+        title.setTooltip(new Tooltip(project.displayName()));
         var spacer = new Region();
         HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
         var pathState = new Label(pathStateText(project.pathStatus()));
@@ -245,10 +278,12 @@ public final class ProjectHomeViewController {
         heading.setAlignment(Pos.CENTER_LEFT);
 
         var path = new Label(project.path().toString());
-        path.setWrapText(true);
+        path.setMaxWidth(368);
         path.getStyleClass().add("project-card-path");
+        path.setTooltip(new Tooltip(project.path().toString()));
 
         var gitState = meta(gitStateText(gitStatuses.get(project.id())));
+        gitState.getStyleClass().add("project-git-summary");
         var ide = meta("默认 IDE：" + (project.defaultIdeId() == null
                 ? "未设置"
                 : ideNames.getOrDefault(project.defaultIdeId(), "不可用")));
@@ -261,8 +296,8 @@ public final class ProjectHomeViewController {
         var footer = new HBox(detail);
         footer.setAlignment(Pos.CENTER_RIGHT);
 
-        var content = new VBox(10, heading, path, gitState, ide, opened);
-        content.setPrefWidth(364);
+        var content = new VBox(8, heading, path, gitState, ide, opened);
+        content.setPrefWidth(368);
         if (project.nestedRepository()) {
             var nested = new Label("嵌套项目");
             nested.getStyleClass().add("nested-text");
@@ -280,6 +315,7 @@ public final class ProjectHomeViewController {
         card.getStyleClass().add("project-card");
 
         var launch = new Button("启动项目");
+        launch.getStyleClass().add("card-primary-action");
         launch.setDisable(!canLaunch(project, ideNames));
         launch.setOnAction(event -> launchProject(project));
         StackPane.setAlignment(launch, Pos.BOTTOM_LEFT);
@@ -308,6 +344,7 @@ public final class ProjectHomeViewController {
     private static Label meta(String text) {
         var label = new Label(text);
         label.getStyleClass().add("project-meta");
+        label.setTooltip(new Tooltip(text));
         return label;
     }
 

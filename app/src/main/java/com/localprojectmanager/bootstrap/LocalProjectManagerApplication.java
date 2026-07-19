@@ -20,6 +20,7 @@ import com.localprojectmanager.infrastructure.ide.JetBrainsIdeDetector;
 import com.localprojectmanager.infrastructure.ide.VisualStudioCodeDetector;
 import com.localprojectmanager.infrastructure.git.GitClient;
 import com.localprojectmanager.infrastructure.windows.WindowsProjectLauncher;
+import com.localprojectmanager.ui.DialogTheme;
 import com.localprojectmanager.ui.MainViewController;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -114,11 +115,17 @@ public final class LocalProjectManagerApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+        var stylesheet = Objects.requireNonNull(
+                getClass().getResource("/css/application.css"),
+                "Missing application.css"
+        );
+        DialogTheme.setStylesheets(List.of(stylesheet.toExternalForm()));
         if (databaseFailure != null) {
             var alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("本地 Git 项目管理器");
             alert.setHeaderText("数据库升级失败");
             alert.setContentText("无法打开或升级本地数据库，原数据库文件已保留。");
+            DialogTheme.apply(alert);
             alert.showAndWait();
             Platform.exit();
             return;
@@ -128,11 +135,6 @@ public final class LocalProjectManagerApplication extends Application {
                 getClass().getResource("/fxml/main-view.fxml"),
                 "Missing main-view.fxml"
         );
-        var stylesheet = Objects.requireNonNull(
-                getClass().getResource("/css/application.css"),
-                "Missing application.css"
-        );
-
         var loader = new FXMLLoader(view);
         scene = new Scene(loader.load(), 960, 640);
         MainViewController controller = loader.getController();
@@ -272,6 +274,7 @@ public final class LocalProjectManagerApplication extends Application {
             alert.setHeaderText("关闭后如何处理？");
             alert.setContentText("可以继续在系统托盘中运行，设置中可随时修改。");
             alert.getButtonTypes().setAll(minimize, exit, ButtonType.CANCEL);
+            DialogTheme.apply(alert);
             var choice = alert.showAndWait().orElse(ButtonType.CANCEL);
             if (choice == ButtonType.CANCEL) {
                 event.consume();
@@ -335,6 +338,7 @@ public final class LocalProjectManagerApplication extends Application {
         if (useLight) {
             scene.getStylesheets().add(light);
         }
+        DialogTheme.setStylesheets(scene.getStylesheets());
     }
 
     @Override

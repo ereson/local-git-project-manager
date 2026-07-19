@@ -10,6 +10,7 @@ import com.localprojectmanager.domain.project.PathStatus;
 import com.localprojectmanager.domain.project.Project;
 import javafx.fxml.FXML;
 import javafx.application.Platform;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
@@ -26,8 +27,10 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -68,6 +71,7 @@ public final class ProjectHomeViewController {
     @FXML private TableColumn<Project, String> stateColumn;
 
     private ProjectImportService projectService;
+    private IdeService ideService;
     private Map<UUID, String> ideNames = Map.of();
     private Map<UUID, GitStatusCache> gitStatuses = Map.of();
     private GitStatusService gitStatusService;
@@ -115,8 +119,9 @@ public final class ProjectHomeViewController {
     }
 
     void setIdeService(IdeService ideService) {
+        this.ideService = Objects.requireNonNull(ideService);
         try {
-            ideNames = Objects.requireNonNull(ideService).listAvailableIdes().stream()
+            ideNames = ideService.listAvailableIdes().stream()
                     .collect(Collectors.toUnmodifiableMap(ide -> ide.id(), Object::toString));
         } catch (SQLException exception) {
             ideNames = Map.of();
@@ -227,7 +232,7 @@ public final class ProjectHomeViewController {
         return new ReadOnlyStringWrapper(value == null ? "—" : value.toString());
     }
 
-    private Button createCard(Project project) {
+    private StackPane createCard(Project project) {
         var title = new Label(project.displayName());
         title.getStyleClass().add("project-card-title");
         var spacer = new Region();
@@ -273,7 +278,31 @@ public final class ProjectHomeViewController {
                 "Open project callback not configured"
         ).accept(project));
         card.getStyleClass().add("project-card");
-        return card;
+
+        var launch = new Button("启动项目");
+        launch.setDisable(!canLaunch(project, ideNames));
+        launch.setOnAction(event -> launchProject(project));
+        StackPane.setAlignment(launch, Pos.BOTTOM_LEFT);
+        StackPane.setMargin(launch, new Insets(0, 0, 18, 18));
+        return new StackPane(card, launch);
+    }
+
+    private void launchProject(Project project) {
+        try {
+            var ideId = Objects.requireNonNull(project.defaultIdeId());
+            Objects.requireNonNull(ideService, "IdeService not configured")
+                    .openProject(project, ideId);
+            refreshProjects();
+            statusLabel.setText("已使用 " + ideNames.get(ideId) + " 打开 " + project.displayName() + "。");
+        } catch (IllegalArgumentException | SQLException | IOException exception) {
+            statusLabel.setText("无法启动项目，请检查项目路径和默认 IDE。");
+        }
+    }
+
+    static boolean canLaunch(Project project, Map<UUID, String> availableIdes) {
+        return project.pathStatus() == PathStatus.NORMAL
+                && project.defaultIdeId() != null
+                && availableIdes.containsKey(project.defaultIdeId());
     }
 
     private static Label meta(String text) {

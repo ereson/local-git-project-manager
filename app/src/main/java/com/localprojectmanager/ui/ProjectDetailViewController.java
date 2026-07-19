@@ -232,6 +232,7 @@ public final class ProjectDetailViewController {
                 + "\nAhead/Behind：" + value(currentGitStatus.aheadCount(), "未知")
                 + "/" + value(currentGitStatus.behindCount(), "未知")
                 + "\n策略：");
+        DialogTheme.apply(dialog);
         dialog.showAndWait().ifPresent(this::runPull);
     }
 
@@ -315,6 +316,7 @@ public final class ProjectDetailViewController {
                 );
                 alert.setTitle("确认切换分支");
                 alert.setHeaderText("存在未提交修改");
+                DialogTheme.apply(alert);
                 if (alert.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
                     runBranchSwitch(branch, remote, true);
                     return;
@@ -517,6 +519,7 @@ public final class ProjectDetailViewController {
         dialog.setTitle("重命名项目");
         dialog.setHeaderText("修改项目显示名称");
         dialog.setContentText("名称：");
+        DialogTheme.apply(dialog);
         dialog.showAndWait().ifPresent(name -> {
             try {
                 project = projectService.rename(project, name);
@@ -563,6 +566,7 @@ public final class ProjectDetailViewController {
         );
         alert.setTitle("从软件中移除");
         alert.setHeaderText("确认移除 " + project.displayName() + "？");
+        DialogTheme.apply(alert);
         if (alert.showAndWait().orElse(ButtonType.CANCEL) != ButtonType.OK) {
             return;
         }

@@ -99,17 +99,19 @@
                     <VBox spacing="10" styleClass="detail-panel">
                         <Label text="分支" styleClass="detail-title"/>
                         <TextField fx:id="branchSearchField" promptText="搜索分支名称"
-                                   accessibleText="搜索分支名称"/>
+                                   accessibleText="搜索分支名称" styleClass="project-search"/>
                         <HBox spacing="16">
                             <VBox spacing="6" HBox.hgrow="ALWAYS">
                                 <Label text="本地分支" styleClass="detail-key"/>
-                                <ListView fx:id="localBranchesList" prefHeight="120"/>
+                                <ListView fx:id="localBranchesList" prefHeight="120"
+                                          styleClass="scan-root-list"/>
                                 <Button fx:id="switchLocalBranchButton" text="切换到所选分支"
                                         onAction="#switchLocalBranch" disable="true"/>
                             </VBox>
                             <VBox spacing="6" HBox.hgrow="ALWAYS">
                                 <Label text="远程分支" styleClass="detail-key"/>
-                                <ListView fx:id="remoteBranchesList" prefHeight="120"/>
+                                <ListView fx:id="remoteBranchesList" prefHeight="120"
+                                          styleClass="scan-root-list"/>
                                 <Button fx:id="trackRemoteBranchButton" text="创建并切换跟踪分支"
                                         onAction="#trackRemoteBranch" disable="true"/>
                             </VBox>

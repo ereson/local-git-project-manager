@@ -151,6 +151,7 @@ public final class MainViewController {
             alert.setTitle("无法添加项目");
             alert.setHeaderText("所选目录不是有效的 Git 项目");
             alert.setContentText("请选择包含 .git 目录或 .git 文件的项目根目录。");
+            DialogTheme.apply(alert);
             alert.showAndWait();
         }
     }
@@ -250,6 +251,7 @@ public final class MainViewController {
         alert.setContentText("发布时间：" + result.update().publishedAt()
                 + "\n\n" + String.join("\n", result.update().releaseNotes()));
         alert.getButtonTypes().setAll(download, ButtonType.CANCEL);
+        DialogTheme.apply(alert);
         if (alert.showAndWait().orElse(ButtonType.CANCEL) != download) {
             return;
         }
@@ -269,6 +271,7 @@ public final class MainViewController {
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(text);
+        DialogTheme.apply(alert);
         alert.showAndWait();
     }
 
